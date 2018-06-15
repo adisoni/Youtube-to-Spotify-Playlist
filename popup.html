@@ -1,0 +1,29 @@
+<html>
+
+    <head>
+	<script src="jquery-3.3.1.js"> </script>
+                <script src="background.js"> </script>
+                <script src="Cookies.js"> </script>
+
+  </head>
+
+    <body>
+
+    <a id=authorize href="https://accounts.spotify.com/en/authorize?response_type=token&redirect_uri=http%3A%2F%2Fgithub.com%2Fadisoni&client_id=f0bb4222da7a43d8bddfb0af7ea0489a&scope=user-read-private%20user-read-email%20user-read-birthdate%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public" target="_blank">Sign In To Spotify</a>
+	
+	<div id=test> 
+
+        <button id=getPlaylists>  Get List of Playlists </button>
+
+        <button id=logOut>  Log Out </button>
+
+    </div>
+
+            <p id="date"></p>
+  
+                <script src="popup.js"> </script>
+                  
+      </body>
+  
+            
+  </html>
