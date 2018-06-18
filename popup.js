@@ -146,22 +146,24 @@ query+="&type=track"
 query+="&access_token="+accessToken
 $('#songData').empty()
 $('#songData').show()
-$("body").css('width',"100px")
+$("body").css('width',"320px")
 
  $.ajax({
       type: "GET",
       url: query,
       dataType: 'json',
       success: function(data){
-        $("#songData").append("Adding song "+JSON.stringify(data["tracks"]["items"][0]["name"]))
+        //$("#songData").append("Adding song "+JSON.stringify(data["tracks"]["items"][0]["name"]))
         //$("a").attr("href", JSON.stringify(data["tracks"]["items"][0]["href"]))
-	test = JSON.stringify(data["tracks"]["items"][0]["name"]);
+	//test = JSON.stringify(data["tracks"]["items"][0]["name"]);
+	console.log(JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, ''))
+	$("#songData").append("<img src=" + JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + JSON.stringify(data["tracks"]["items"][0]["name"]).replace(/['"]+/g, '') + "</h3>" + "<p>" + "By " + JSON.stringify(data["tracks"]["items"][0]["artists"][0]["name"]).replace(/['"]+/g, '') + "</p>" )
  $.ajax({
  type:"POST",
   url: "https://api.spotify.com/v1/users/"+id+"/playlists/"+item["id"]+"/tracks?uris=" + (JSON.stringify(data["tracks"]["items"][0]["uri"])).replace(/['"]+/g, ''),
   headers: {"Authorization" : "Bearer " + accessToken},
   success: function(data){
-	$("#songData").append(" \n to playlist " + item['name'])
+	$("#songData").append(" <p id=playlistName> has been added to playlist " + item['name'] + "</p>"  + "</div>" )
   },
   error: function(error){$("#songData").append(JSON.stringify(error))}
   

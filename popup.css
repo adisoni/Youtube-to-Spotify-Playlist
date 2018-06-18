@@ -64,5 +64,32 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   text-align: center;
 }
 
+#songData img{
+  float: left;
+  margin-top: 0px;
+  height: 80px;
+}
 
+#songData p{
+  text-align: left;
+}
+
+#songData h3{
+  text-align: left;
+}
+
+#songData .playlistInfo {
+  float: left;
+  margin-left: 10px;
+}
+
+#playlistName {
+  float:left;
+}
+
+#songData{
+  height: 80px;
+  width:400px;
+  margin: 5px;  
+}
 
