@@ -1,0 +1,68 @@
+body {
+  background-color: #f2eaea;
+  border: 0px;
+}
+
+button{
+  background-color: rgb(43, 220, 229);
+font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #ffffff;
+  border: 0px;
+}
+
+
+#getPlaylists {
+  background-color: rgb(43, 220, 229);
+}
+
+#logOut {
+  background-color: rgb(43, 180, 229);
+  margin-top: 5px;
+}
+
+#initial a{
+  color: #ffffff;
+  background-color: #000000;  
+}
+
+.initial:hover{
+  color: #000000;
+}
+
+#playlists button:hover {
+  color: #000000;
+}
+
+#playlists button{
+  height: 80px;
+  width:320px;
+  margin: 5px;
+}
+
+#playlists button img{
+  float: left;
+  margin-top: 0px;
+  height: 100%;
+}
+
+#playlists button p{
+  text-align: left;
+}
+
+#playlists button h3{
+  text-align: left;
+}
+
+#playlists .playlistInfo {
+  float: left;
+  margin-left: 10px;
+}
+
+#choosePlaylist h2 {
+  margin-bottom: 5px;
+  color: rgb(43, 40, 229);
+  text-align: center;
+}
+
+
+

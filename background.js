@@ -7,7 +7,7 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 
     if(url.hostname=="github.com") {
 
-	//document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";		
+
 
     var urlParts = (url.hash).split("&") 
     temp = urlParts[0].split("=")

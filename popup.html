@@ -1,29 +1,28 @@
-<html>
-
+<!DOCTYPE html>
     <head>
 	<script src="jquery-3.3.1.js"> </script>
-                <script src="background.js"> </script>
-                <script src="Cookies.js"> </script>
-
+        <script src="background.js"> </script>
+	<link rel="stylesheet" href="popup.css">
   </head>
 
     <body>
 
-    <a id=authorize href="https://accounts.spotify.com/en/authorize?response_type=token&redirect_uri=http%3A%2F%2Fgithub.com%2Fadisoni&client_id=f0bb4222da7a43d8bddfb0af7ea0489a&scope=user-read-private%20user-read-email%20user-read-birthdate%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public" target="_blank">Sign In To Spotify</a>
+	<div id=initial>
+
+    <a id=authorize href="https://accounts.spotify.com/en/authorize?response_type=token&redirect_uri=https%3A%2F%2Fgithub.com%2Fadisoni%2FYoutube-to-Spotify-Playlist%2Fblob%2Fmaster%2FRedirect.md&client_id=f0bb4222da7a43d8bddfb0af7ea0489a&scope=user-read-private%20user-read-email%20user-read-birthdate%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public" target="_blank"> 	<button class=initial> Sign In To Spotify 	</button> </a>
+
+        <button id=getPlaylists class=initial>  Choose a playlist </button>
+
+        <button id=logOut class=initial>  Log Out </button>
 	
-	<div id=test> 
+	</div>
 
-        <button id=getPlaylists>  Get List of Playlists </button>
+	<div id=choosePlaylist><h2> Choose a Playlist </h2><div id=playlists></div></div>
 
-        <button id=logOut>  Log Out </button>
-
-    </div>
-
-            <p id="date"></p>
+	<div id=songData></div>
   
                 <script src="popup.js"> </script>
                   
       </body>
-  
-            
+       
   </html>
