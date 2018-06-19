@@ -3,7 +3,7 @@ body {
   border: 0px;
 }
 
-button{
+#getPlaylists,#logOut,#authorize{
   background-color: rgb(43, 220, 229);
 font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #ffffff;
@@ -20,17 +20,17 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   margin-top: 5px;
 }
 
-#initial a{
-  color: #ffffff;
-  background-color: #000000;  
-}
-
 .initial:hover{
   color: #000000;
 }
 
+/*#playlists button {
+  background-color: #f2eaea
+}*/
+
 #playlists button:hover {
   color: #000000;
+  background-color: #03DAC6
 }
 
 #playlists button{
@@ -38,7 +38,7 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   width:320px;
   margin: 5px;
 }
-
+	
 #playlists button img{
   float: left;
   margin-top: 0px;
@@ -68,6 +68,7 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   float: left;
   margin-top: 0px;
   height: 80px;
+  margin-right: 10px;
 }
 
 #songData p{
@@ -79,17 +80,20 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #songData .playlistInfo {
-  float: left;
-  margin-left: 10px;
+  position: fixed;
+    top: 10px;
+  left: 100px
 }
 
 #playlistName {
-  float:left;
+  clear:both;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #songData{
   height: 80px;
-  width:400px;
+  width:320px;
   margin: 5px;  
 }
 

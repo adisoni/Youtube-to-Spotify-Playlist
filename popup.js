@@ -1,27 +1,114 @@
-var accessToken = document.cookie;
+hideAllElements();
+checkIfLoggedIn();
+
+function getCurrentTab(callback) {
+chrome.tabs.getSelected(null, function (tab) {
+  var url = new URL(tab.url)
+  var domain = url.hostname
+$("#songData").show()
+  
+  if(domain=="www.youtube.com") {
+
+    //chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+       callback(tab.title)
+//});
+}
+
+else {
+$("#songData").show()
+$("#songData").append("Please go to a valid <a href=http://www.google.com target=_blank>Youtube</a> link")
+}
+});
+}
+
+function hideAllElements() {
 $("#getPlaylists").hide();
 $("#authorize").hide();
 $("#logOut").hide();
 $("#songData").hide();
-$("#choosePlaylist").hide();
-if(accessToken==undefined || accessToken=='' ) {
+$("#choosePlaylist").hide()
+}
+
+function checkIfLoggedIn() {
+
+var accessTokenTemp = (document.cookie).split("=")
+accessToken=accessTokenTemp[1]
+
+  if(accessToken==undefined || accessToken=='' ) {
 $("#authorize").show();
-$("#getPlaylists").hide();
-$("#logOut").hide();
-}
-else{
-$("#authorize").hide();
-$("#getPlaylists").show();
+  }
+  else{
 $("#logOut").show();
+ ifLoggedIn(accessToken)
+  }
 }
 
-$("#logOut").click(function(){
+function ifLoggedIn(accessToken) {
+  getCurrentTab(function(title){
+  getUserId(accessToken,function(userId) {
+    getCurrentSong(title,accessToken,userId,function(songId){
+  $("#getPlaylists").show();
+      $("#getPlaylists").click(function(){
+	getPlaylists(userId,accessToken,songId)	
+      })
+    })
+  })
+  })
+}
 
-	document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";	
-	$("#authorize").show(); 
-$("#getPlaylists").hide();
-$("#logOut").hide();		
+function getPlaylists(userId,accessToken,songId){
+
+  hideAllElements()
+  $('#logOut').show();
+  
+  $.ajax({
+      type: "GET",
+      url: "https://api.spotify.com/v1/users/"+userId+"/playlists?access_token="+accessToken,
+
+      dataType: 'json',
+      success: function(data){
+        listofPlaylists = data["items"]
+        
+        var count = 0;
+
+	$("#choosePlaylist").show();
+
+
+	console.log(JSON.stringify(data["items"][0]["images"][0]["url"]).replace(/['"]+/g, ''))
+	
+        listofPlaylists.forEach(function(item){
+            var temp = document.createElement("button");
+            var playlist = JSON.stringify(item["name"]).replace(/['"]+/g, '');
+            temp.innerHTML ="<img src=" + JSON.stringify(item["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + playlist + "</h3>" + "<p>" + JSON.stringify(item["tracks"]["total"]).replace(/['"]+/g, '') + " songs" + "</p>" + "</div>" 
+            temp.setAttribute('id',count)
+	    temp.style.margin = "0px"
+	    temp.style.border = "0px"
+	    temp.style.padding = "0px"
+            $('#playlists').append(temp)
+            $("#"+count).click(function(){
+              $("#playlists").empty();
+	      $("#choosePlaylist").hide(); 
+	      addToPlaylist(userId,item["id"].replace(/['"]+/g, ''),item["name"].replace(/['"]+/g, ''),songId,accessToken);
+            });
+            ++count
+        })
+      }
 })
+}
+
+function addToPlaylist(userId,playlistId,playlistName,songId,accessToken) {
+  $('#songData').show()
+$.ajax({
+ type:"POST",
+  url: "https://api.spotify.com/v1/users/"+userId+"/playlists/"+playlistId+"/tracks?uris=" +songId ,
+  headers: {"Authorization" : "Bearer " + accessToken},
+  success: function(data){
+	$("#playlistName").append(" <H3 id=playlistName> has been added to playlist " + playlistName + "</H3>" )
+  },
+  error: function(error){$("#playlistName").append(JSON.stringify(error))}
+  
+})
+}
 
 function getUserId(accessToken,callback){
 
@@ -31,80 +118,13 @@ $.ajax({
       dataType: 'json',
       success: function(data){
        var id = JSON.stringify(data["id"])
-	callback(id);
+	callback(id.replace(/['"]+/g, ''));
       }
 })
 
 }
 
-$("#getPlaylists").click(function(){
-
-
-
-var accessTokenTemp = (document.cookie).split("=")
-accessToken=accessTokenTemp[1]
-
-
-var id;
-
-
-getUserId(accessToken,function(data){
-	id = data.replace(/['"]+/g, '')		
-	console.log(accessToken)
-	$("button").hide();
-$.ajax({
-      type: "GET",
-      url: "https://api.spotify.com/v1/users/"+id+"/playlists?access_token="+accessToken,
-
-      dataType: 'json',
-      success: function(data){
-        listofPlaylists = data["items"]
-        
-        var count = 0;
-	var minValue = 40
-	var currentValue= 220
-	var increment=(minValue-currentValue)/listofPlaylists.length;
-	$("#choosePlaylist").show();
-	$('#songData').hide()
-
-	console.log(JSON.stringify(data["items"][0]["images"][0]["url"]).replace(/['"]+/g, ''))
-	
-	//rgb(43, 220, 229)	
-        listofPlaylists.forEach(function(item){
-            var temp = document.createElement("button");
-            var playlist = JSON.stringify(item["name"]).replace(/['"]+/g, '');
-            temp.innerHTML ="<img src=" + JSON.stringify(item["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + playlist + "</h3>" + "<p>" + JSON.stringify(item["tracks"]["total"]).replace(/['"]+/g, '') + " songs" + "</p>" + "</div>" 
-            temp.setAttribute('id',count)
-	    temp.style.margin = "0px"
-	    temp.style.border = "0px"
-	    temp.style.padding = "0px"
-	    temp.style.float = "left"
-	    currentValue += increment
-	    temp.style.backgroundColor = "rgb(43, "+currentValue+", 229)";
-            $('#playlists').append(temp)
-            //$('#playlists').append("<br>")
-            $("#"+count).click(function(){
-              $("#playlists").empty();
-	      $("#choosePlaylist").hide(); 
-              console.log(item["name"]);
-              addSong(item,accessToken,id);
-            });
-            ++count
-
-        })
-      }
-}).done(function(data){console.log("hi")})
-  
-  $("button").hide();
-
-})
-
-});
-
-
-var test;
-
-function generateQuery(testString,item,accessToken,id) {
+function getCurrentSong(testString,accessToken,id,callback) {
 
 var temp = testString.split("ft.");
 
@@ -148,26 +168,16 @@ $('#songData').empty()
 $('#songData').show()
 $("body").css('width',"320px")
 
+console.log(query)
+
  $.ajax({
       type: "GET",
       url: query,
       dataType: 'json',
       success: function(data){
-        //$("#songData").append("Adding song "+JSON.stringify(data["tracks"]["items"][0]["name"]))
-        //$("a").attr("href", JSON.stringify(data["tracks"]["items"][0]["href"]))
-	//test = JSON.stringify(data["tracks"]["items"][0]["name"]);
 	console.log(JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, ''))
-	$("#songData").append("<img src=" + JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + JSON.stringify(data["tracks"]["items"][0]["name"]).replace(/['"]+/g, '') + "</h3>" + "<p>" + "By " + JSON.stringify(data["tracks"]["items"][0]["artists"][0]["name"]).replace(/['"]+/g, '') + "</p>" )
- $.ajax({
- type:"POST",
-  url: "https://api.spotify.com/v1/users/"+id+"/playlists/"+item["id"]+"/tracks?uris=" + (JSON.stringify(data["tracks"]["items"][0]["uri"])).replace(/['"]+/g, ''),
-  headers: {"Authorization" : "Bearer " + accessToken},
-  success: function(data){
-	$("#songData").append(" <p id=playlistName> has been added to playlist " + item['name'] + "</p>"  + "</div>" )
-  },
-  error: function(error){$("#songData").append(JSON.stringify(error))}
-  
-})
+	$("#songData").append("<img src=" + JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + JSON.stringify(data["tracks"]["items"][0]["name"]).replace(/['"]+/g, '') + "</h3>" + "<p>" + "By " + JSON.stringify(data["tracks"]["items"][0]["artists"][0]["name"]).replace(/['"]+/g, '') + "</p>"+ "</div>" );
+	callback(JSON.stringify(data["tracks"]["items"][0]["uri"]).replace(/['"]+/g, ''))
       },      
       error: function(error) {
         document.write("error")
@@ -176,29 +186,11 @@ $("body").css('width',"320px")
 
 }
 
-function addSong(item,accessToken,id) {
+$("#logOut").click(function(){
 
-chrome.tabs.getSelected(null, function (tab) {
-  var url = new URL(tab.url)
-  var domain = url.hostname
-  
-  if(domain=="www.youtube.com") {
-
-chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
-       generateQuery(tabs[0].title,item,accessToken,id);
-	//alert(tabs[0].title)
-
-});
-}
-
-else {
-$("#songData").show()
-$("#songData").append("Please go to a valid <a href=http://www.google.com target=_blank>Youtube</a> link")
-//$("#songData").css('width',"40px")
-//$("#songData").css('height',"1em")
-}
-});
-
-}
-
+	document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";	
+	$("#authorize").show(); 
+hideAllElements()	
+$("#authorize").show();
+})
 

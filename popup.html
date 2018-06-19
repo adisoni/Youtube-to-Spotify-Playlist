@@ -7,19 +7,21 @@
 
     <body>
 
-	<div id=initial>
 
-    <a id=authorize href="https://accounts.spotify.com/en/authorize?response_type=token&redirect_uri=https%3A%2F%2Fgithub.com%2Fadisoni%2FYoutube-to-Spotify-Playlist%2Fblob%2Fmaster%2FRedirect.md&client_id=f0bb4222da7a43d8bddfb0af7ea0489a&scope=user-read-private%20user-read-email%20user-read-birthdate%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public" target="_blank"> 	<button class=initial> Sign In To Spotify 	</button> </a>
-
-        <button id=getPlaylists class=initial>  Choose a playlist </button>
-
-        <button id=logOut class=initial>  Log Out </button>
 	
-	</div>
 
 	<div id=choosePlaylist><h2> Choose a Playlist </h2><div id=playlists></div></div>
 
 	<div id=songData></div>
+
+	<div id=playlistName></div>
+
+
+    <a href="https://accounts.spotify.com/en/authorize?response_type=token&redirect_uri=https%3A%2F%2Fgithub.com%2Fadisoni%2FYoutube-to-Spotify-Playlist%2Fblob%2Fmaster%2FRedirect.md&client_id=f0bb4222da7a43d8bddfb0af7ea0489a&scope=user-read-private%20user-read-email%20user-read-birthdate%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public" target="_blank"> 	<button id=authorize class=initial> Sign In To Spotify 	</button> </a>
+
+        <button id=getPlaylists class=initial>  Add to a playlist </button>
+
+        <button id=logOut class=initial>  Log Out </button>
   
                 <script src="popup.js"> </script>
                   
