@@ -3,7 +3,7 @@
 
   "name": "Youtube to Spotify Playlist",
   "description": "A chrome widget which allows users to instantly add songs being listened to on Youtube to a Spotify playlist.",
-  "version": "1.6",
+  "version": "1.7",
 
   "browser_action": {
    "default_popup": "popup.html"
@@ -16,5 +16,7 @@
 
   "permissions": [
    "activeTab",
+	"tabs",
+   "notifications"
    ]
 }

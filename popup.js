@@ -16,7 +16,7 @@ $("#songData").show()
 
 else {
 $("#songData").show()
-$("#songData").append("Please go to a valid <a href=http://www.google.com target=_blank>Youtube</a> link")
+$("#songData").append("Please go to a valid <a href=http://www.youtube.com target=_blank>Youtube</a> link")
 }
 });
 }
@@ -35,10 +35,14 @@ var accessTokenTemp = (document.cookie).split("=")
 accessToken=accessTokenTemp[1]
 
   if(accessToken==undefined || accessToken=='' ) {
+$("body").css("width","60px")
+$("#authorize").css("width","60px")
 $("#authorize").show();
+
   }
   else{
 $("#logOut").show();
+$("body").css("width","320px")
  ifLoggedIn(accessToken)
   }
 }
@@ -46,17 +50,17 @@ $("#logOut").show();
 function ifLoggedIn(accessToken) {
   getCurrentTab(function(title){
   getUserId(accessToken,function(userId) {
-    getCurrentSong(title,accessToken,userId,function(songId){
+    getCurrentSong(title,accessToken,userId,function(songId,songName){
   $("#getPlaylists").show();
       $("#getPlaylists").click(function(){
-	getPlaylists(userId,accessToken,songId)	
+	getPlaylists(userId,accessToken,songId,songName)	
       })
     })
   })
   })
 }
 
-function getPlaylists(userId,accessToken,songId){
+function getPlaylists(userId,accessToken,songId,songName){
 
   hideAllElements()
   $('#logOut').show();
@@ -88,7 +92,9 @@ function getPlaylists(userId,accessToken,songId){
             $("#"+count).click(function(){
               $("#playlists").empty();
 	      $("#choosePlaylist").hide(); 
-	      addToPlaylist(userId,item["id"].replace(/['"]+/g, ''),item["name"].replace(/['"]+/g, ''),songId,accessToken);
+$("#songData").hide();
+	      $("#playlistName").append("<H4> Adding " + songName + " to " + playlist )
+	      addToPlaylist(userId,item["id"].replace(/['"]+/g, ''),item["name"].replace(/['"]+/g, ''), songId, songName,accessToken);
             });
             ++count
         })
@@ -96,16 +102,17 @@ function getPlaylists(userId,accessToken,songId){
 })
 }
 
-function addToPlaylist(userId,playlistId,playlistName,songId,accessToken) {
-  $('#songData').show()
+function addToPlaylist(userId,playlistId,playlistName,songId,songName,accessToken) {
+  //$('#songData').show()
 $.ajax({
  type:"POST",
   url: "https://api.spotify.com/v1/users/"+userId+"/playlists/"+playlistId+"/tracks?uris=" +songId ,
   headers: {"Authorization" : "Bearer " + accessToken},
   success: function(data){
-	$("#playlistName").append(" <H3 id=playlistName> has been added to playlist " + playlistName + "</H3>" )
+	$("#playlistName").empty()
+	$("#playlistName").append("<H4>" + songName + " has been added to " + playlistName + "</H3>" )
   },
-  error: function(error){$("#playlistName").append(JSON.stringify(error))}
+  error: function(error){$("#playlistNam	e").append(JSON.stringify(error))}
   
 })
 }
@@ -128,7 +135,9 @@ function getCurrentSong(testString,accessToken,id,callback) {
 
 var temp = testString.split("ft.");
 
-var temp5 = temp[0].split("(Official")
+var temp6 = temp[0].split("[Official")
+
+var temp5 = temp6[0].split("(Official")
 
 var temp4 = temp5[0].split("(Ft.");
 
@@ -166,7 +175,6 @@ query+="&type=track"
 query+="&access_token="+accessToken
 $('#songData').empty()
 $('#songData').show()
-$("body").css('width',"320px")
 
 console.log(query)
 
@@ -177,7 +185,7 @@ console.log(query)
       success: function(data){
 	console.log(JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, ''))
 	$("#songData").append("<img src=" + JSON.stringify(data["tracks"]["items"][0]["album"]["images"][0]["url"]).replace(/['"]+/g, '') + ">" + "<div class=playlistInfo>" + "<h3>" + JSON.stringify(data["tracks"]["items"][0]["name"]).replace(/['"]+/g, '') + "</h3>" + "<p>" + "By " + JSON.stringify(data["tracks"]["items"][0]["artists"][0]["name"]).replace(/['"]+/g, '') + "</p>"+ "</div>" );
-	callback(JSON.stringify(data["tracks"]["items"][0]["uri"]).replace(/['"]+/g, ''))
+	callback(JSON.stringify(data["tracks"]["items"][0]["uri"]).replace(/['"]+/g, ''),JSON.stringify(data["tracks"]["items"][0]["name"]).replace(/['"]+/g, ''))
       },      
       error: function(error) {
         document.write("error")
@@ -190,7 +198,7 @@ $("#logOut").click(function(){
 
 	document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";	
 	$("#authorize").show(); 
-hideAllElements()	
-$("#authorize").show();
+hideAllElements()
+checkIfLoggedIn()	
 })
 

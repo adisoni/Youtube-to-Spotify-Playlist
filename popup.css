@@ -1,23 +1,31 @@
 body {
   background-color: #f2eaea;
   border: 0px;
+  color: #211413;
+  font-size: 15px;
 }
 
 #getPlaylists,#logOut,#authorize{
-  background-color: rgb(43, 220, 229);
+  background-color: #3a8fd1;
 font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #ffffff;
   border: 0px;
+  font-size: 15px;
 }
 
 
 #getPlaylists {
   background-color: rgb(43, 220, 229);
+  margin-left: 6px;
+  color: #000000;
+  margin-top: 5px
 }
 
 #logOut {
-  background-color: rgb(43, 180, 229);
+  background-color: #3a8fd1;
   margin-top: 5px;
+margin-left: 6px;
+
 }
 
 .initial:hover{
@@ -25,7 +33,7 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /*#playlists button {
-  background-color: #f2eaea
+  background-color: #6200EE
 }*/
 
 #playlists button:hover {
@@ -38,7 +46,7 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
   width:320px;
   margin: 5px;
 }
-	
+
 #playlists button img{
   float: left;
   margin-top: 0px;
@@ -67,7 +75,7 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
 #songData img{
   float: left;
   margin-top: 0px;
-  height: 80px;
+  height: 100px;
   margin-right: 10px;
 }
 
@@ -81,18 +89,16 @@ font-family: proxima_nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
 
 #songData .playlistInfo {
   position: fixed;
-    top: 10px;
-  left: 100px
+    top: 5px;
+  left: 120px
 }
 
 #playlistName {
-  clear:both;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  width: 320px;
 }
 
 #songData{
-  height: 80px;
+  height: 100px;
   width:320px;
   margin: 5px;  
 }
